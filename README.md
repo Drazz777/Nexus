@@ -21,19 +21,19 @@ This document provides an overview of the API endpoints available in the E-Comme
 | Endpoint | Method | Description | Request Body | Response |
 |----------|--------|-------------|--------------|----------|
 | `/api/public/categories` | GET | Retrieves all categories with pagination | None | List of categories |
-| `/api/admin/categories` | POST | Creates a new category | `{ "name": "categoryName" }` | Created category |
-| `/api/admin/categories/{categoryId}` | PUT | Updates an existing category | `{ "name": "newName" }` | Updated category |
+| `/api/admin/categories` | POST | Creates a new category | `{ "categoryName": "categoryName" }` | Created category |
+| `/api/admin/categories/{categoryId}` | PUT | Updates an existing category | `{ "categoryName": "newName" }` | Updated category |
 | `/api/admin/categories/{categoryId}` | DELETE | Deletes a category | None | Deleted category |
 
 ## Product APIs
 
 | Endpoint | Method | Description | Request Body | Response |
 |----------|--------|-------------|--------------|----------|
-| `/api/admin/categories/{categoryId}/product` | POST | Adds a product to a category | `{ "name": "productName", "price": 100 }` | Created product |
+| `/api/admin/categories/{categoryId}/product` | POST | Adds a product to a category | `{ "productName": "productName", "image": "imageURL", "quantity": 10, "price": 100, "discount": 10, "specialPrice": 90 }` | Created product |
 | `/api/public/products` | GET | Retrieves all products with pagination | None | List of products |
 | `/api/public/categories/{categoryId}/product` | GET | Retrieves products by category | None | List of products |
 | `/api/public/products/keyword/{keyword}` | GET | Searches products by keyword | None | List of products |
-| `/api/admin/products/{productId}` | PUT | Updates a product | `{ "name": "newName", "price": 120 }` | Updated product |
+| `/api/admin/products/{productId}` | PUT | Updates a product | `{ "productName": "newName", "image": "imageURL", "quantity": 5, "price": 120, "discount": 5, "specialPrice": 115 }` | Updated product |
 | `/api/admin/products/{productId}` | DELETE | Deletes a product | None | Deleted product |
 
 ## Cart APIs
@@ -50,16 +50,16 @@ This document provides an overview of the API endpoints available in the E-Comme
 
 | Endpoint | Method | Description | Request Body | Response |
 |----------|--------|-------------|--------------|----------|
-| `/api/addresses` | POST | Adds a new address | `{ "street": "123 Main St", "city": "City", "zip": "12345" }` | Created address |
+| `/api/addresses` | POST | Adds a new address | `{ "street": "123 Main St", "building": "Apt 4", "city": "City", "state": "State", "country": "Country", "pincode": "12345" }` | Created address |
 | `/api/addresses` | GET | Retrieves all addresses | None | List of addresses |
 | `/api/addresses/{addressId}` | GET | Retrieves an address by ID | None | Address details |
 | `/api/users/addresses` | GET | Retrieves addresses of logged-in user | None | List of user addresses |
-| `/api/addresses/{addressId}` | PUT | Updates an address | `{ "street": "New St" }` | Updated address |
+| `/api/addresses/{addressId}` | PUT | Updates an address | `{ "street": "New St", "building": "Apt 10" }` | Updated address |
 | `/api/addresses/{addressId}` | DELETE | Deletes an address | None | Success message |
 
 ## Order APIs
 
 | Endpoint | Method | Description | Request Body | Response |
 |----------|--------|-------------|--------------|----------|
-| `/api/order/users/payments/{paymentMethod}` | POST | Places an order | `{ "addressId": 1, "pgName": "PayPal", "pgPaymentId": "123", "pgStatus": "Success", "pgResponseMessage": "Approved" }` | Order details |
+| `/api/order/users/payments/{paymentMethod}` | POST | Places an order | `{ "addressId": 1, "paymentMethod": "Card", "pgName": "PayPal", "pgPaymentId": "123", "pgStatus": "Success", "pgResponseMessage": "Approved" }` | Order details |
 
