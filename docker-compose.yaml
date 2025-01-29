@@ -1,0 +1,97 @@
+# services:
+#   postgres:
+#     container_name: postgres_container
+#     image: postgres
+#     environment:
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: 117760
+#       PGDATA: /data/postgres
+#     volumes:
+#       - postgres:/data/postgres
+#     ports:
+#       - "5433:5432"
+#     networks:
+#       - postgres
+#     restart: unless-stopped
+
+#   pgadmin:
+#     container_name: pgadmin_container
+#     image: dpage/pgadmin4
+#     environment:
+#       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.com}
+#       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+#       PGADMIN_CONFIG_SERVER_MODE: 'False'
+#     volumes:
+#       - pgadmin:/var/lib/pgadmin
+#     ports:
+#       - "5050:80"
+#     networks:
+#       - postgres
+#     restart: unless-stopped
+
+# networks:
+#   postgres:
+#     driver: bridge
+
+# volumes:
+#   postgres:
+#   pgadmin:
+
+version: '3.9'
+
+services:
+  spring-boot-app:
+    container_name: spring_boot_container
+    image: nexus_app:latest # Name of the built image for your Spring Boot app
+    build:
+      context: . # The directory where your Dockerfile is located
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Expose the app on port 8080
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 117760
+    depends_on:
+      - postgres
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgres_container
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 117760
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5433:5432"
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: pgadmin4@pgadmin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - app_network
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres:
+  pgadmin:
